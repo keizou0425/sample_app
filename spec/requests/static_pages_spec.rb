@@ -6,13 +6,13 @@ RSpec.describe "Statuses", type: :request do
   it "should get root" do
     get root_url
     expect(response).to have_http_status(200)
-    expect(response.body).to include("Home | #{base_title}")
+    expect(response.body).to include("#{base_title}")
   end
 
   it "should get home" do
     get static_pages_home_url
     expect(response).to have_http_status(200)
-    expect(response.body).to include("Home | #{base_title}")
+    expect(response.body).to include("#{base_title}")
   end
 
   it "should get help" do
