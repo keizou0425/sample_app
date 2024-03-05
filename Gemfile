@@ -67,3 +67,6 @@ group :test do
   gem "rspec-rails"
   gem "factory_bot_rails"
 end
+
+gem "bootstrap-sass", "3.4.1"
+gem "sassc-rails", "2.1.2"
