@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Users", type: :request do
+RSpec.describe "Users signup", type: :request do
 
   it '正しい値であるとUserを登録できる' do
     expect {
@@ -14,6 +14,7 @@ RSpec.describe "Users", type: :request do
       }
     }.to change(User, :count).by(1)
     follow_redirect!
+    expect(is_logged_in?).to be_truthy
   end
 
   it '不正な値ではUserを登録できないこと' do
@@ -27,5 +28,6 @@ RSpec.describe "Users", type: :request do
         }
       }
     }.not_to change(User, :count)
+    expect(is_logged_in?).to be_falsy
   end
 end
