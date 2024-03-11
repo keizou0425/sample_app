@@ -60,4 +60,30 @@ RSpec.describe "Users login", type: :request do
     expect(response.status).to be 303
     expect(is_logged_in?).to be_falsy
   end
+
+  it 'ログアウト後も別のウィンドウでログアウトした時にエラーにならないこと' do
+    log_in_as(user)
+
+    expect(is_logged_in?).to be_truthy
+    # ログアウト
+    delete logout_path
+
+    # ログアウト済み確認
+    expect(is_logged_in?).to be_falsy
+    # ログアウトを試みる
+    delete logout_path
+    # エラーが起きずにリダイレクト処理
+    expect(response.status).to be 303
+  end
+
+  it 'ログイン状態を永続的に維持するログイン' do
+    log_in_as(user, remember_me: '1')
+    expect(cookies[:remember_token].blank?).to be_falsey
+  end
+
+  it 'ログイン状態を永続的に維持しないログイン' do
+    log_in_as(user, remember_me: '1')
+    log_in_as(user, remember_me: '0')
+    expect(cookies[:remember_token].blank?).to be_truthy
+  end
 end

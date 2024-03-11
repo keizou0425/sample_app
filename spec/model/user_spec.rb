@@ -61,4 +61,8 @@ RSpec.describe User, type: :model do
     user.password = user.password_confirmation = "a" * 5
     expect(user.valid?).to be_falsey
   end
+
+  it "userのdigestがnilの場合、authenticated?メソッドはfalseを返すこと" do
+    expect(user.authenticated?('')).to be_falsey
+  end
 end
