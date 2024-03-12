@@ -22,4 +22,17 @@ RSpec.describe 'User edit', type: :request do
     expect(user.name).to eq name
     expect(user.email).to eq email
   end
+
+  it 'web経由でadmin属性を更新できない' do
+    log_in_as(user)
+    expect(user.admin?).to be_falsey
+    patch user_path(user), params: {
+      user: {
+        password: "password",
+        password_confirmation: "password",
+        admin: true
+      }
+    }
+    expect(user.reload.admin?).to be_falsey
+  end
 end
