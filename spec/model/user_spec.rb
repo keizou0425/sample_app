@@ -65,4 +65,12 @@ RSpec.describe User, type: :model do
   it "userのdigestがnilの場合、authenticated?メソッドはfalseを返すこと" do
     expect(user.authenticated?(:remember, user.remember_token)).to be_falsey
   end
+
+  it "ユーザーが削除されると一緒に投稿も削除される" do
+    user.save
+    user.microposts.create!(content: "lorem ipsum")
+    expect {
+      user.destroy
+  }.to change { Micropost.count }.by(-1)
+  end
 end

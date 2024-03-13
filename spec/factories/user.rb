@@ -9,5 +9,9 @@ FactoryBot.define do
     trait :admin_user do
       admin { true }
     end
+
+    trait :alice do
+      name { "alice" }
+    end
   end
 end
