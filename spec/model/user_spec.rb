@@ -73,4 +73,37 @@ RSpec.describe User, type: :model do
       user.destroy
   }.to change { Micropost.count }.by(-1)
   end
+
+  it 'フォローとアンフォロー' do
+    user.save
+    alice = FactoryBot.create(:user, :alice)
+    expect(user.following?(alice)).to be_falsey
+    user.follow(alice)
+    expect(alice.followers.include?(user)).to be_truthy
+    expect(user.following?(alice)).to be_truthy
+    user.unfollow(alice)
+    expect(user.following?(alice)).to be_falsey
+    user.follow(user)
+    expect(user.following?(user)).to be_falsey
+  end
+
+  it 'feedには自身と、自身がフォローしたユーザーの投稿しか含まれていない' do
+    user.save
+    alice = FactoryBot.create(:user, :with_post)
+    bob = FactoryBot.create(:user, :with_post)
+
+    user.follow(alice)
+
+    alice.microposts.each do |m|
+      expect(user.feed.include?(m)).to be_truthy
+    end
+
+    user.microposts.each do |m|
+      expect(user.feed.include?(m)).to be_truthy
+    end
+
+    bob.microposts.each do |m|
+      expect(user.feed.include?(m)).to be_falsey
+    end
+  end
 end

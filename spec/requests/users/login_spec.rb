@@ -173,4 +173,14 @@ RSpec.describe "Users login", type: :request do
     delete user_path(other)
   }.to change(User, :count).by(-1)
   end
+
+  it '未ログイン状態でfollowingsページにアクセスするとログインページにリダイレクトされる' do
+    get following_user_path(user)
+    expect(response).to redirect_to login_url
+  end
+
+  it '未ログイン状態でfollowerページにアクセスするとログインページにリダイレクトされる' do
+    get followers_user_path(user)
+    expect(response).to redirect_to login_url
+  end
 end
