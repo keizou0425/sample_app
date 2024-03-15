@@ -7,27 +7,27 @@ RSpec.describe User, type: :model do
                         password_confirmation: "foobar") }
 
   it "正しいユーザー" do
-    expect(user.valid?).to be_truthy
+    expect(user).to be_valid
   end
 
   it "名前は必須であること" do
     user.name = "   "
-    expect(user.valid?).to be_falsey
+    expect(user).to be_invalid
   end
 
   it "メールアドレスは必須であること" do
     user.email = "   "
-    expect(user.valid?).to be_falsey
+    expect(user).to be_invalid
   end
 
   it "名前は長すぎてはダメ" do
     user.name = "a" * 51
-    expect(user.valid?).to be_falsey
+    expect(user).to be_invalid
   end
 
   it "メールアドレスは長すぎてはダメ" do
     user.email = "a" * 244 + "@example.com"
-    expect(user.valid?).to be_falsey
+    expect(user).to be_invalid
   end
 
   it "メールアドレスは正しいフォーマットでなければならないこと" do
@@ -35,14 +35,14 @@ RSpec.describe User, type: :model do
 
     invalid_addresses.each do |invalid_address|
       user.email = invalid_address
-      expect(user.valid?).to be_falsey
+      expect(user).to be_invalid
     end
   end
 
   it "メールアドレスは一意であること" do
     duplicate_user = user.dup
     user.save
-    expect(duplicate_user.valid?).to be_falsey
+    expect(duplicate_user).to be_invalid
   end
 
   it "メールアドレスは小文字に変換され保存されること" do
@@ -54,12 +54,12 @@ RSpec.describe User, type: :model do
 
   it "パスワードは空白ではダメなこと" do
     user.password = user.password_confirmation = " " * 6
-    expect(user.valid?).to be_falsey
+    expect(user).to be_invalid
   end
 
   it "パスワードは最低でも6文字であること" do
     user.password = user.password_confirmation = "a" * 5
-    expect(user.valid?).to be_falsey
+    expect(user).to be_invalid
   end
 
   it "userのdigestがnilの場合、authenticated?メソッドはfalseを返すこと" do
@@ -79,7 +79,7 @@ RSpec.describe User, type: :model do
     alice = FactoryBot.create(:user, :alice)
     expect(user.following?(alice)).to be_falsey
     user.follow(alice)
-    expect(alice.followers.include?(user)).to be_truthy
+    expect(alice.followers).to include(user)
     expect(user.following?(alice)).to be_truthy
     user.unfollow(alice)
     expect(user.following?(alice)).to be_falsey
@@ -94,16 +94,16 @@ RSpec.describe User, type: :model do
 
     user.follow(alice)
 
-    alice.microposts.each do |m|
-      expect(user.feed.include?(m)).to be_truthy
+    alice.microposts.each do |micropost|
+      expect(user.feed).to include(micropost)
     end
 
-    user.microposts.each do |m|
-      expect(user.feed.include?(m)).to be_truthy
+    user.microposts.each do |micropost|
+      expect(user.feed).not_to include(micropost)
     end
 
-    bob.microposts.each do |m|
-      expect(user.feed.include?(m)).to be_falsey
+    bob.microposts.each do |micropost|
+      expect(user.feed).not_to include(micropost)
     end
   end
 end
