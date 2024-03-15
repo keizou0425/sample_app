@@ -1,9 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Relationship, type: :model do
-  let(:user) { create(:user) }
-  let(:alice) { create(:user, :alice) }
-  let(:relationship) { Relationship.new(follower_id: user.id, followed_id: alice.id) }
+  let(:relationship) { create(:relationship) }
 
   it '有効なRelationship' do
     expect(relationship.valid?).to be_truthy
