@@ -24,4 +24,28 @@ RSpec.describe Micropost, type: :model do
     most_recent_post = FactoryBot.create(:micropost, :most_recent_post)
     expect(most_recent_post).to eq Micropost.first
   end
+
+  describe '#pick_out_reply' do
+    let(:post) { build(:micropost) }
+
+    it '改行を含む文字列から@replyを抜き出す' do
+      post.content = "これは\n改行\nが\n含まれる\n文字列ですte\nst。@ali\nce "
+      expect(post.pick_out_reply).to eq '@alice'
+    end
+
+    it '@replyの後ろに半角スペースがある場合' do
+      post.content = "hello @alice , nice to meet you."
+      expect(post.pick_out_reply).to eq '@alice'
+    end
+
+    it '@replyの後ろに半角スペースがない場合' do
+      post.content = "hello @alice, nice to meet you."
+      expect(post.pick_out_reply).to eq '@alice'
+    end
+
+    it 'contentに@replyが含まれていなければnilを返す' do
+      post.content = "hello alice, nice to meet you."
+      expect(post.pick_out_reply).to be_nil
+    end
+  end
 end
