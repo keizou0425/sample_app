@@ -15,6 +15,13 @@ RSpec.describe User, type: :model do
     expect(user).to be_invalid
   end
 
+  it '名前は一意であること' do
+    duplicate_user = user.dup
+    duplicate_user.email = 'foo@example.com'
+    user.save
+    expect(duplicate_user).to be_invalid
+  end
+
   it "メールアドレスは必須であること" do
     user.email = "   "
     expect(user).to be_invalid
