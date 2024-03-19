@@ -12,14 +12,21 @@ FactoryBot.define do
 
     trait :alice do
       name { "alice" }
+      email { "alice@example.com"}
     end
 
     trait :bob do
       name { "bob" }
+      email { "bob@example.com" }
+    end
+
+    trait :in_activated do
+      activated { false }
+      activated_at { nil }
     end
 
     trait :with_post do
-      after(:create) { |user| create_list(:micropost, 3, user: user) }
+      after(:create) { |user| create_list(:micropost, 50, user: user) }
     end
   end
 end
