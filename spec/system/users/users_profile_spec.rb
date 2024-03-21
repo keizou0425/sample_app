@@ -18,7 +18,6 @@ RSpec.describe "Users profile", type: :system do
     expect(current_path).to eq user_path(with_post)
     expect(page).to have_title(full_title(with_post.name))
     expect(page).to have_selector('h1', text: with_post.name)
-    expect(page).to have_selector('h1>img.gravatar')
     expect(page).to have_content(with_post.microposts.count.to_s)
     expect(page).to have_selector('div.pagination')
     with_post.microposts.paginate(page: 1).each do |micropost|

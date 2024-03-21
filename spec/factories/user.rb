@@ -6,6 +6,10 @@ FactoryBot.define do
     activated { true }
     activated_at { Time.zone.now }
 
+    after(:build) do |user|
+      user.default_image_attache
+    end
+
     trait :admin_user do
       admin { true }
     end

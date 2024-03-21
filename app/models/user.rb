@@ -2,6 +2,7 @@ class User < ApplicationRecord
   attr_accessor :remember_token, :activation_token, :reset_token
 
   has_secure_password
+  has_one_attached :avatar
   has_many :microposts, dependent: :destroy
   has_many :active_relationships, class_name: 'Relationship', foreign_key: 'follower_id', dependent: :destroy
   has_many :followings, through: :active_relationships, source: :followed
@@ -85,6 +86,11 @@ class User < ApplicationRecord
 
   def following?(other_user)
     followings.include?(other_user)
+  end
+
+  def default_image_attache
+    file = File.open(Rails.root.join('app', 'assets', 'images', 'jouba_pony_boy.png').to_s)
+    avatar.attach(io: file, filename: 'jouba_pony_boy.png', content_type: 'image/png')
   end
 
   private

@@ -19,6 +19,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    @user.default_image_attache unless @user.avatar.attached?
     if @user.save
       @user.send_activation_email
       flash[:info] = 'please  check your email to activate your account.'
@@ -52,21 +53,21 @@ class UsersController < ApplicationController
   def following
     @title = "Following"
     @user = User.find(params[:id])
-    @users = @user.followings.paginate(page: params[:page])
+    @users = @user.followings.paginate(page: params[:page]).with_attached_avatar
     render 'show_follow', status: :unprocessable_entity
   end
 
   def followers
     @title = "Followers"
     @user = User.find(params[:id])
-    @users = @user.followers.paginate(page: params[:page])
+    @users = @user.followers.paginate(page: params[:page]).with_attached_avatar
     render 'show_follow', status: :unprocessable_entity
   end
 
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :avatar)
   end
 
   def correct_user

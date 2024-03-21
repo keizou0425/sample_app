@@ -8,5 +8,8 @@
   <%= f.password_field :password, class: 'form-control' %>
   <%= f.label :password_confirmation %>
   <%= f.password_field :password_confirmation, class: 'form-control' %>
+  <span class="image">
+    <%= f.file_field :avatar %>
+  </span>
   <%= f.submit yield(:button_text), class: "btn btn-primary" %>
 <% end %>
