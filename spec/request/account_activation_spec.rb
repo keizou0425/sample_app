@@ -4,7 +4,7 @@ RSpec.describe "Account activation", type: :request do
   before do
     post users_path, params: {
       user: {
-        name: 'Example User',
+        name: 'ExampleUser',
         email: 'user@example.com',
         password: 'password',
         password_confirmation: 'password'

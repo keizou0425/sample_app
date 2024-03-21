@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_many :followers, through: :passive_relationships, source: :follower
   before_save :downcase_email
   before_create :create_activation_digest
-  validates :name, presence: true, length: { maximum: 50 }, uniqueness: true
+  validates :name, presence: true, length: { maximum: 50 }, uniqueness: true, format: { without: /\s/, message: "can't contain spaces" }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
   validates :email,
                 presence: true,

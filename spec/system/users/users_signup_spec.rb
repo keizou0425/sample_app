@@ -26,7 +26,7 @@ RSpec.describe "Users signup", type: :system do
     visit root_path
     expect {
       click_link 'Sign up now!'
-      fill_in 'Name', with: 'Examle User'
+      fill_in 'Name', with: 'ExamleUser'
       fill_in 'Email', with: "user@example.com"
       fill_in 'Password', with: 'password'
       fill_in 'Password confirmation', with: 'password'

@@ -8,7 +8,7 @@ RSpec.describe "Account activation", type: :system do
   scenario 'ユーザー登録直後はアカウントは有効化されていない' do
     visit root_path
     click_link 'Sign up now!'
-    fill_in 'Name', with: 'Examle User'
+    fill_in 'Name', with: 'ExamleUser'
     fill_in 'Email', with: "user@example.com"
     fill_in 'Password', with: 'password'
     fill_in 'Password confirmation', with: 'password'

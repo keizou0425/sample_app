@@ -15,6 +15,11 @@ RSpec.describe User, type: :model do
     expect(user).to be_invalid
   end
 
+  it '名前にスペースを含んではいけない' do
+    user.name = 'rails rails'
+    expect(user).to be_invalid
+  end
+
   it '名前は一意であること' do
     duplicate_user = user.dup
     duplicate_user.email = 'foo@example.com'
