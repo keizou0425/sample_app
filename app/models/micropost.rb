@@ -1,5 +1,6 @@
 class Micropost < ApplicationRecord
   belongs_to :user
+  before_save :add_in_reply_to
   has_one_attached :image do |attachable|
     attachable.variant :display, resize_to_limit: [500, 500]
   end
@@ -8,6 +9,13 @@ class Micropost < ApplicationRecord
   validates :content, presence: true, length: { maximum: 140 }
   validates :image, content_type: { in: %w[image/jpeg image/gif image/png], message: 'must be a valid image format' }, size: { less_than: 5.megabytes, message: 'should be less than 5MB' }
 
+
+  private
+
+  def add_in_reply_to
+    replies = pick_out_reply
+    self.in_reply_to = replies.join(',') unless replies.blank?
+  end
 
   def pick_out_reply
     replies = []
