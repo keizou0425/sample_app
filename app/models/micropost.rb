@@ -10,8 +10,14 @@ class Micropost < ApplicationRecord
 
 
   def pick_out_reply
-    str_no_newlines = content.gsub(/\n/, '')
-    match = str_no_newlines.match(/@[^\s\W]+/)
-    match[0] unless match.nil?
+    replies = []
+    str = content.gsub(/\n/, '')
+    str.gsub(/@(\w+)/) do |match|
+      user = User.find_by(name: $1)
+      if user
+        replies << user.name
+      end
+    end
+    replies
   end
 end

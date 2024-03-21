@@ -28,24 +28,40 @@ RSpec.describe Micropost, type: :model do
   describe '#pick_out_reply' do
     let(:post) { build(:micropost) }
 
-    it '改行を含む文字列から@replyを抜き出す' do
+    it 'micropostのcontent文字列から@nameを抜き出す' do
+      alice = FactoryBot.create(:user, :alice)
+      post.content = "hello! @alice!"
+      expect(post.pick_out_reply).to eq [alice.name]
+    end
+
+    it 'micropostのcontent文字列から複数の@nameを抜き出す' do
+      alice = FactoryBot.create(:user, :alice)
+      bob = FactoryBot.create(:user, :bob)
+      post.content = "hello! @alice! and @bob."
+      expect(post.pick_out_reply).to eq [alice.name, bob.name]
+    end
+
+    it '改行を含むmicropostのcontent文字列から@nameを抜き出す' do
+      alice = FactoryBot.create(:user, :alice)
       post.content = "これは\n改行\nが\n含まれる\n文字列ですte\nst。@ali\nce "
-      expect(post.pick_out_reply).to eq '@alice'
+      expect(post.pick_out_reply).to eq [alice.name]
     end
 
-    it '@replyの後ろに半角スペースがある場合' do
-      post.content = "hello @alice , nice to meet you."
-      expect(post.pick_out_reply).to eq '@alice'
+    it '@nameのユーザーが存在しない場合空の配列を返す' do
+      post.content = "hello @alilililice , nice to meet you."
+      expect(post.pick_out_reply).to eq []
     end
 
-    it '@replyの後ろに半角スペースがない場合' do
-      post.content = "hello @alice, nice to meet you."
-      expect(post.pick_out_reply).to eq '@alice'
+    it '@nameが連続して続く時もそれぞれ認識できる' do
+      alice = FactoryBot.create(:user, :alice)
+      bob = FactoryBot.create(:user, :bob)
+      post.content = "hello! @alice@bob."
+      expect(post.pick_out_reply).to eq [alice.name, bob.name]
     end
 
-    it 'contentに@replyが含まれていなければnilを返す' do
+    it 'contentに@nameが含まれていなければ空の配列を返す' do
       post.content = "hello alice, nice to meet you."
-      expect(post.pick_out_reply).to be_nil
+      expect(post.pick_out_reply).to eq []
     end
   end
 end
