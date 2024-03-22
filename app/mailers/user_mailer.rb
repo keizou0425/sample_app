@@ -19,4 +19,11 @@ class UserMailer < ApplicationMailer
     @user = user
     mail to: @user.email, subject: 'Password reset'
   end
+
+  def be_followed(follow_user, followed_user)
+    @followed_user = followed_user
+    @follow_user = follow_user
+
+    mail to: @followed_user.email, subject: "You are followed"
+  end
 end

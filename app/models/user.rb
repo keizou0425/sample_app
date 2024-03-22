@@ -81,6 +81,10 @@ class User < ApplicationRecord
   end
 
   def follow(other_user)
+    if other_user.notice?
+      UserMailer.be_followed(self, other_user).deliver_now
+    end
+
     followings << other_user unless self == other_user
   end
 

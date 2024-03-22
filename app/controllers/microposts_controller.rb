@@ -10,6 +10,7 @@ class MicropostsController < ApplicationController
       redirect_to root_url
     else
       @feed_items = current_user.feed.paginate(page: params[:page])
+      @q = Micropost.ransack(params[:q])
       render 'static_pages/home', status: :unprocessable_entity
     end
   end

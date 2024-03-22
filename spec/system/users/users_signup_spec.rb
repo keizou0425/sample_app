@@ -34,7 +34,7 @@ RSpec.describe "Users signup", type: :system do
     }.to change { User.count }.by(1)
 
     expect(page).to have_selector('.alert-info')
-    expect(page.body).to have_content('please  check your email to activate your account.')
+    expect(page.body).to have_content('please check your email to activate your account.')
     expect(ActionMailer::Base.deliveries.size).to eq 1
   end
 end
