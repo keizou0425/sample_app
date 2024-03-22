@@ -1,0 +1,11 @@
+<% provide(:title, 'Result') %>
+<h1>Result</h1>
+<%= will_paginate %>
+<% if @users.blank? %>
+  <h2>Not found..</h2>
+<% else %>
+  <ul class="users">
+    <%= render @users %>
+  </ul>
+<% end %>
+<%= will_paginate %>
