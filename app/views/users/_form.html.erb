@@ -8,6 +8,10 @@
   <%= f.password_field :password, class: 'form-control' %>
   <%= f.label :password_confirmation %>
   <%= f.password_field :password_confirmation, class: 'form-control' %>
+  <%= f.label :notice, class: "checkbox inline" do %>
+    <%= f.check_box :notice %>
+    <span>Do you want to be notified by email when you are followed?</span>
+  <% end %>
   <span class="image">
     <%= f.file_field :avatar %>
   </span>

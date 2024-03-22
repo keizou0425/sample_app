@@ -86,6 +86,11 @@ RSpec.describe User, type: :model do
   }.to change { Micropost.count }.by(-1)
   end
 
+  it 'ユーザーは登録直後は通知設定がtrueである' do
+    user.save
+    expect(user.notice?).to be_truthy
+  end
+
   it 'フォローとアンフォロー' do
     user.save
     alice = FactoryBot.create(:user, :alice)

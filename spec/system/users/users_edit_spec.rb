@@ -34,12 +34,14 @@ RSpec.describe "Users edit", type: :system do
     fill_in 'Email', with:"valid@example.com"
     fill_in 'Password', with: 'foobar'
     fill_in 'Password confirmation', with: 'foobar'
+    uncheck 'user_notice'
     click_button 'Save changes'
 
     expect(page).to have_selector('.alert-success')
     expect(page.body).to have_content('updated!')
     expect(alice.reload.name).to eq 'bob'
     expect(alice.reload.email).to eq 'valid@example.com'
+    expect(alice.notice?).to be_falsey
   end
 
   scenario 'フレンドリーフォワーディング' do
