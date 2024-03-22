@@ -99,6 +99,16 @@ RSpec.describe User, type: :model do
     expect(user.following?(user)).to be_falsey
   end
 
+  it 'フォローするとフォローされた人にメールで通知される' do
+    ActionMailer::Base.deliveries.clear
+    user.save
+    alice = FactoryBot.create(:user, :alice)
+
+    expect(ActionMailer::Base.deliveries.size).to eq 0
+    user.follow(alice)
+    expect(ActionMailer::Base.deliveries.size).to eq 1
+  end
+
   it 'feedには自身と、自身がフォローしたユーザーの投稿しか含まれていない' do
     user.save
     alice = FactoryBot.create(:user, :with_post)
