@@ -1,0 +1,5 @@
+<%= search_form_for @q, url: search_microposts_path do |f| %>
+  <%= f.label :content_cont, 'Search microposts' %>
+  <%= f.search_field :content_cont, placeholder: 'keyword..' %>
+  <%= f.submit 'Search', id: 'micropost_search_submit' %>
+<% end %>

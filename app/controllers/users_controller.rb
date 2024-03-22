@@ -23,7 +23,7 @@ class UsersController < ApplicationController
     @user.default_image_attache unless @user.avatar.attached?
     if @user.save
       @user.send_activation_email
-      flash[:info] = 'please  check your email to activate your account.'
+      flash[:info] = 'please check your email to activate your account.'
       redirect_to root_url
     else
       render 'new', status: :unprocessable_entity

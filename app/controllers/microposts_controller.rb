@@ -20,6 +20,11 @@ class MicropostsController < ApplicationController
     redirect_back_or_to(root_url, status: :see_other)
   end
 
+  def search
+    @q = Micropost.ransack(params[:q])
+    @microposts = @q.result.paginate(page: params[:page])
+  end
+
   private
 
   def micropost_params

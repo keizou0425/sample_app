@@ -1,0 +1,11 @@
+<% provide(:title, 'Result') %>
+<h1>Result</h1>
+<%= will_paginate %>
+<% if @microposts.blank? %>
+  <h2>Not found..</h2>
+<% else %>
+  <ul class="microposts">
+    <%= render @microposts %>
+  </ul>
+<% end %>
+<%= will_paginate %>
