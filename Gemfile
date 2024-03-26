@@ -69,6 +69,10 @@ group :test do
   gem "factory_bot_rails"
 end
 
+group :production do
+  gem 'pg'
+end
+
 gem "bootstrap-sass", "3.4.1"
 gem "sassc-rails", "2.1.2"
 gem "bcrypt", "3.1.18"
