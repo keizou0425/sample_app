@@ -8,6 +8,9 @@ class User < ApplicationRecord
   has_many :followings, through: :active_relationships, source: :followed
   has_many :passive_relationships, class_name: 'Relationship', foreign_key: 'followed_id', dependent: :destroy
   has_many :followers, through: :passive_relationships, source: :follower
+  has_many :memberships, dependent: :destroy
+  has_many :conversations, through: :memberships, dependent: :destroy
+  has_many :messages, dependent: :destroy
   before_save :downcase_email
   before_create :create_activation_digest
   validates :name, presence: true, length: { maximum: 50 }, uniqueness: true, format: { without: /\s/, message: "can't contain spaces" }
@@ -99,6 +102,27 @@ class User < ApplicationRecord
   def default_image_attache
     file = File.open(Rails.root.join('app', 'assets', 'images', 'jouba_pony_boy.png').to_s)
     avatar.attach(io: file, filename: 'jouba_pony_boy.png', content_type: 'image/png')
+  end
+
+  def create_conversation_with(other_user)
+    conversation = Conversation.new
+    ActiveRecord::Base.transaction do
+      conversation.save!
+      Membership.create!([
+        { conversation: conversation, user: self },
+        { conversation: conversation, user: other_user }
+      ])
+    end
+    conversation
+  end
+
+  def get_conversation_with(other_user)
+    conversation = conversations & other_user.conversations
+    conversation[0]
+  end
+
+  def get_target_user(conversation)
+    user = conversation.users.find { |user| user != self }
   end
 
   private

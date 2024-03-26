@@ -1,0 +1,5 @@
+<li id="conversation-<%= conversation.id %>">
+  <p><%= "Conversation with #{ current_user.get_target_user(conversation).name }"%></p>
+  <%= avatar_for(current_user.get_target_user(conversation))%>
+  <%= link_to 'show this conversation', conversation_path(conversation)%>
+</li>

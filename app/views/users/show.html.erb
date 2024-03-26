@@ -10,14 +10,21 @@
     <section class='stats'>
       <%= render 'shared/stats' %>
     </section>
+    <% unless @user == current_user %>
+      <section>
+        <%= render 'shared/directmessage_form'%>
+      </section>
+    <% end %>
   </aside>
   <div class="col-md-8">
-    <%= render 'follow_form' if logged_in? %>
+    <%= render 'users/follow_form' if logged_in? %>
     <% if @user.microposts.any? %>
       <h3>Microposts (<%= @user.microposts.count %>)</h3>
-      <ol class="microposts">
-        <%= render @microposts %>
-      </ol>
+      <% @microposts.each do |micropost| %>
+        <ol class="microposts">
+          <%= render 'microposts/micropost', micropost: micropost %>
+        </ol>
+      <% end %>
       <%= will_paginate @microposts %>
     <% end %>
   </div>

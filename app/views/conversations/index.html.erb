@@ -1,0 +1,9 @@
+<% provide(:title, 'Conversations') %>
+<h1>Conversations</h1>
+<% if @conversations.any? %>
+  <ul class="users">
+    <%= render @conversations %>
+  </ul>
+<% else %>
+  <h2>Nothing yet...</h2>
+<% end %>

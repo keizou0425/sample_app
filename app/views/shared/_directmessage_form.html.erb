@@ -1,0 +1,8 @@
+<%= form_with(model: @message) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+  <%= hidden_field_tag :target_id, @user.id %>
+  <div class="field">
+    <%= f.text_area :content, placeholder: "Direct message to #{@user.name}...", id: "direct_message" %>
+  </div>
+  <%= f.submit "Send Message", class: "btn btn-primary" %>
+<% end %>

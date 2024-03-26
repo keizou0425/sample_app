@@ -1,0 +1,30 @@
+<% provide("Conversation") %>
+<div class="row">
+  <div class="col-md-4">
+    <aside class="col-md-6">
+      <section class="user_info">
+        <h1>
+          <%= avatar_for(current_user) %>
+          <%= current_user.name %>
+        </h1>
+      </section>
+    </aside>
+    <aside class="col-md-6">
+      <section class="user_info">
+        <h1>
+          <%= avatar_for(@user) %>
+          <%= @user.name %>
+        </h1>
+      </section>
+    </aside>
+    <div class="col-md-12">
+      <%= render 'shared/directmessage_form' %>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <h3>Messages (<%= @messages.count %>)</h3>
+    <ol class="microposts">
+      <%= render @messages %>
+    </ol>
+  </div>
+</div>

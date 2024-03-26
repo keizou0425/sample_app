@@ -24,6 +24,16 @@ FactoryBot.define do
       email { "bob@example.com" }
     end
 
+    trait :carol do
+      name { "carol" }
+      email { "carol@example.com" }
+    end
+
+    trait :dave do
+      name { "dave" }
+      email { "dave@example.com" }
+    end
+
     trait :in_activated do
       activated { false }
       activated_at { nil }

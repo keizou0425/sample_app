@@ -6,6 +6,11 @@ RSpec.describe User, type: :model do
                         password: "foobar",
                         password_confirmation: "foobar") }
 
+  let(:alice) { FactoryBot.create(:user, :alice) }
+  let(:bob) { FactoryBot.create(:user, :bob) }
+  let(:carol) { FactoryBot.create(:user, :carol) }
+  let(:dave) { FactoryBot.create(:user, :dave) }
+
   it "正しいユーザー" do
     expect(user).to be_valid
   end
@@ -93,7 +98,6 @@ RSpec.describe User, type: :model do
 
   it 'フォローとアンフォロー' do
     user.save
-    alice = FactoryBot.create(:user, :alice)
     expect(user.following?(alice)).to be_falsey
     user.follow(alice)
     expect(alice.followers).to include(user)
@@ -107,7 +111,6 @@ RSpec.describe User, type: :model do
   it 'フォローするとフォローされた人にメールで通知される' do
     ActionMailer::Base.deliveries.clear
     user.save
-    alice = FactoryBot.create(:user, :alice)
 
     expect(ActionMailer::Base.deliveries.size).to eq 0
     user.follow(alice)
@@ -116,9 +119,6 @@ RSpec.describe User, type: :model do
 
   it 'feedには自身と、自身がフォローしたユーザーの投稿しか含まれていない' do
     user.save
-    alice = FactoryBot.create(:user, :with_post)
-    bob = FactoryBot.create(:user, :with_post)
-
     user.follow(alice)
 
     alice.microposts.each do |micropost|
@@ -132,5 +132,28 @@ RSpec.describe User, type: :model do
     bob.microposts.each do |micropost|
       expect(user.feed).not_to include(micropost)
     end
+  end
+
+  it 'ユーザーは他のユーザーとDMを作成する事ができる' do
+    conversation = alice.create_conversation_with(bob)
+
+    expect(conversation).to eq bob.conversations[0]
+  end
+
+  it 'ユーザーは他のユーザーとのDMを取得できる' do
+    conversation_with_bob = alice.create_conversation_with(bob)
+    conversation_with_carol = alice.create_conversation_with(carol)
+
+    expect(alice.get_conversation_with(bob)).to eq conversation_with_bob
+    expect(alice.get_conversation_with(carol)).to eq conversation_with_carol
+    expect(alice.get_conversation_with(dave)).to be_nil
+  end
+
+  it 'ユーザーはDMの相手をDMから取得できる' do
+    conversation_with_bob = alice.create_conversation_with(bob)
+    conversation_with_carol = alice.create_conversation_with(carol)
+
+    expect(alice.get_target_user(conversation_with_bob)).to eq bob
+    expect(alice.get_target_user(conversation_with_carol)).to eq carol
   end
 end
