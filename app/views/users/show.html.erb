@@ -12,6 +12,9 @@
     </section>
     <% unless @user == current_user %>
       <section>
+        <%= link_to 'RSS', "/feeds/#{@user.id}.rss" %>
+      </section>
+      <section>
         <%= render 'shared/directmessage_form'%>
       </section>
     <% end %>

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get '/feeds(/:user_id)', to: 'feeds#show', defaults: { format: :rss }
   get 'password_resets/new'
   get 'password_resets/edit'
   root 'static_pages#home'
