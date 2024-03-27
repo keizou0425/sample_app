@@ -4,7 +4,7 @@ class FeedsController < ApplicationController
     @microposts = @user.microposts.limit(5)
 
     respond_to do |format|
-      format.rss
+      format.rss { render layout: false }
     end
   end
 end
