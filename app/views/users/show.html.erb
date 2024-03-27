@@ -11,9 +11,14 @@
       <%= render 'shared/stats' %>
     </section>
     <% unless @user == current_user %>
-      <section>
+      <section >
         <%= link_to image_tag("icons8-rss-48.png", alt: "RSS"), "/feeds/#{@user.id}.rss" %>
       </section>
+      <p><%= @user.name %>'s Microposts</p>
+      <section >
+        <%= link_to image_tag("icons8-rss-48.png", alt: "RSS"), "/feeds/#{@user.id}.rss?feed=true" %>
+      </section>
+      <p><%= @user.name %>'s Feed</p>
       <section>
         <%= render 'shared/directmessage_form'%>
       </section>

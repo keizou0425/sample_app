@@ -1,16 +1,16 @@
 xml.instruct! :xml, version: '1.0'
 xml.rss(version: '2.0') do
   xml.channel do
-    xml.title "#{@user.name}の投稿"
-    xml.description "#{@user.name}の最新の投稿"
+    xml.title "#{@title}"
+    xml.description "#{@description}"
     xml.link "https://sample-app-04xx.onrender.com/users/#{@user.id}"
     unless @microposts.last.nil?
-      xml.lastBuildDate @microposts.last&.created_at&.rfc2822
+      xml.lastBuildDate @microposts.last.created_at.rfc2822
       xml.language 'ja'
       @microposts.each do |micropost|
         xml.item do
-          xml.title micropost&.content
-          xml.pubDate micropost&.created_at.rfc2822
+          xml.title micropost.content
+          xml.pubDate micropost.created_at.rfc2822
           xml.link "https://sample-app-04xx.onrender.com/users/#{@user.id}"
         end
       end
